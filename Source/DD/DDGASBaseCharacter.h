@@ -7,7 +7,14 @@
 #include "AbilitySystemInterface.h"
 #include "DDGASBaseCharacter.generated.h"
 
-struct FOnAttributeChangeData;
+
+UENUM(BlueprintType)
+enum class EGASInputActions : uint8
+{
+    None,
+    Dash
+};
+
 
 UCLASS()
 class DD_API ADDGASBaseCharacter : public ACharacter, public IAbilitySystemInterface
@@ -15,13 +22,14 @@ class DD_API ADDGASBaseCharacter : public ACharacter, public IAbilitySystemInter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ADDGASBaseCharacter();
 
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
+	UPROPERTY(EditDefaultsOnly)
+    TMap<EGASInputActions, TSubclassOf<class UGameplayAbility>> StandartAbilities;
+
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY()
@@ -30,11 +38,9 @@ protected:
 	UPROPERTY()
     class UDDAttributeSet* AttributeSet;
 
-	void OnMovementAttributeChanged(const FOnAttributeChangeData& Data);
+	void OnMovementAttributeChanged(const struct FOnAttributeChangeData& Data);
 
 public:	
-
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };

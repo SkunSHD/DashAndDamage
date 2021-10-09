@@ -3,6 +3,7 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
+
 public class DDEditorTarget : TargetRules
 {
 	public DDEditorTarget(TargetInfo Target) : base(Target)

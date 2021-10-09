@@ -9,6 +9,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 
+
 //////////////////////////////////////////////////////////////////////////
 // ADDCharacter
 
@@ -53,6 +54,8 @@ ADDCharacter::ADDCharacter()
 
 void ADDCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
 	// Set up gameplay key bindings
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
@@ -89,15 +92,18 @@ void ADDCharacter::OnResetVR()
 	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
 }
 
+
 void ADDCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
 		Jump();
 }
 
+
 void ADDCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
 		StopJumping();
 }
+
 
 void ADDCharacter::TurnAtRate(float Rate)
 {
@@ -105,11 +111,13 @@ void ADDCharacter::TurnAtRate(float Rate)
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
+
 void ADDCharacter::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
+
 
 void ADDCharacter::MoveForward(float Value)
 {
@@ -124,6 +132,7 @@ void ADDCharacter::MoveForward(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
+
 
 void ADDCharacter::MoveRight(float Value)
 {

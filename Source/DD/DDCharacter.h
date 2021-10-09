@@ -7,6 +7,7 @@
 #include "DDGASBaseCharacter.h"
 #include "DDCharacter.generated.h"
 
+
 UCLASS(config=Game)
 class ADDCharacter : public ADDGASBaseCharacter
 {

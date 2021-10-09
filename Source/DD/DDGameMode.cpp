@@ -4,6 +4,7 @@
 #include "DDCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 
+
 ADDGameMode::ADDGameMode()
 {
 	// set default pawn class to our Blueprinted character

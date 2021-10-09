@@ -7,10 +7,12 @@
 #include "AbilitySystemComponent.h"
 #include "DDAttributeSet.generated.h"
 
+
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName)
+
 
 UCLASS()
 class DD_API UDDAttributeSet : public UAttributeSet
