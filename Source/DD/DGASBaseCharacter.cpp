@@ -2,33 +2,42 @@
 
 
 #include "DGASBaseCharacter.h"
+#include "AbilitySystemComponent.h"
+#include "DDAttributeSet.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "DDAbilitySystemComponent.h"
 
-// Sets default values
+
 ADGASBaseCharacter::ADGASBaseCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	AbilitySystemComponent = CreateDefaultSubobject<UDDAbilitySystemComponent>("AbilitySystemComponent");
 
+	AttributeSet = CreateDefaultSubobject<UDDAttributeSet>(TEXT("AttributeSet"));
 }
 
-// Called when the game starts or when spawned
+
 void ADGASBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMoveSpeedAttribute()).AddUObject(this, &ADGASBaseCharacter::OnMovementAttributeChanged);
 }
 
-// Called every frame
-void ADGASBaseCharacter::Tick(float DeltaTime)
+
+UAbilitySystemComponent* ADGASBaseCharacter::GetAbilitySystemComponent() const
 {
-	Super::Tick(DeltaTime);
-
+    return AbilitySystemComponent;
 }
 
-// Called to bind functionality to input
+
+void ADGASBaseCharacter::OnMovementAttributeChanged(const FOnAttributeChangeData& Data)
+{
+    GetCharacterMovement()->MaxWalkSpeed = AttributeSet->GetMoveSpeed();
+}
+
+
 void ADGASBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-

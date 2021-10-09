@@ -4,26 +4,36 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "DGASBaseCharacter.generated.h"
 
+struct FOnAttributeChangeData;
+
 UCLASS()
-class DD_API ADGASBaseCharacter : public ACharacter
+class DD_API ADGASBaseCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
+
 	ADGASBaseCharacter();
 
+	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
 protected:
-	// Called when the game starts or when spawned
+
+	UPROPERTY()
+    class UDDAbilitySystemComponent* AbilitySystemComponent;
+
+	UPROPERTY()
+    class UDDAttributeSet* AttributeSet;
+
+	void OnMovementAttributeChanged(const FOnAttributeChangeData& Data);
+
+public:
+
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
