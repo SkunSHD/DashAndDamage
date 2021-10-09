@@ -5,22 +5,24 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
-#include "DGASBaseCharacter.generated.h"
+#include "DDGASBaseCharacter.generated.h"
 
 struct FOnAttributeChangeData;
 
 UCLASS()
-class DD_API ADGASBaseCharacter : public ACharacter, public IAbilitySystemInterface
+class DD_API ADDGASBaseCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
-
-	ADGASBaseCharacter();
+	// Sets default values for this character's properties
+	ADDGASBaseCharacter();
 
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
 	UPROPERTY()
     class UDDAbilitySystemComponent* AbilitySystemComponent;
@@ -30,10 +32,9 @@ protected:
 
 	void OnMovementAttributeChanged(const FOnAttributeChangeData& Data);
 
-public:
+public:	
 
-	virtual void BeginPlay() override;
-
+	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };

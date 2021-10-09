@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "DGASBaseCharacter.h"
+#include "DDGASBaseCharacter.h"
 #include "DDCharacter.generated.h"
 
 UCLASS(config=Game)
-class ADDCharacter : public ADGASBaseCharacter
+class ADDCharacter : public ADDGASBaseCharacter
 {
 	GENERATED_BODY()
 
