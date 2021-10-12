@@ -12,4 +12,5 @@ class DD_API UDDAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
 	
+	// TODO: Delete this component
 };
