@@ -7,15 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameplayEffect.h"
 #include "GameplayEffectTypes.h"
-#include "GameplayPrediction.h"
-#include "GameplayCueInterface.h"
-#include "GameplayTagAssetInterface.h"
-#include "GameplayAbilitySpec.h"
-#include "GameplayEffect.h"
-#include "Abilities/GameplayAbilityTypes.h"
-#include "GameplayTasksComponent.h"
-#include "Abilities/GameplayAbilityTargetTypes.h"
-#include "Abilities/GameplayAbility.h"
+#include "DDPushAwayGameplayEffect.h"
 #include "DDAbilitySystemComponent.h"
 
 
@@ -38,7 +30,7 @@ void ADDGASBaseCharacter::BeginPlay()
    		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(ability.Value, 1, static_cast<int32>(ability.Key)));
     }
 
-	// AbilitySystemComponent->OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &ADDGASBaseCharacter::OnGameplayEffectApplied);
+	AbilitySystemComponent->OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &ADDGASBaseCharacter::OnGameplayEffectApplied);
 }
 
 
@@ -64,5 +56,20 @@ void ADDGASBaseCharacter::OnMovementAttributeChanged(const FOnAttributeChangeDat
 
 void ADDGASBaseCharacter::OnGameplayEffectApplied(UAbilitySystemComponent* Source, const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle)
 {
-	UE_LOG(LogTemp, Warning, TEXT("OnGameplayEffectApplied"));
+	if (auto pushbackEffect = Cast<UDDPushAwayGameplayEffect>(Spec.Def))
+	{
+        if (auto movementComponent = GetCharacterMovement())
+        {
+            auto instigator = Spec.GetEffectContext().GetInstigator();
+            auto direction = instigator ? (GetActorLocation() - instigator->GetActorLocation()).GetSafeNormal2D() : GetActorForwardVector() * -1.0f;
+
+            auto constantForce = new FRootMotionSource_ConstantForce();
+            constantForce->AccumulateMode = ERootMotionAccumulateMode::Additive;
+            constantForce->Force = direction * pushbackEffect->Strength;
+            constantForce->Duration = Spec.GetDuration();
+            constantForce->FinishVelocityParams.Mode = ERootMotionFinishVelocityMode::SetVelocity;
+            constantForce->FinishVelocityParams.SetVelocity = FVector::ZeroVector;
+            movementComponent->ApplyRootMotionSource(constantForce);
+        }
+	}
 }
