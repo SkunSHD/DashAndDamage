@@ -8,6 +8,7 @@
 #include "GameplayEffect.h"
 #include "GameplayEffectTypes.h"
 #include "DDPushAwayGameplayEffect.h"
+#include "GameplayTagContainer.h"
 #include "DDAbilitySystemComponent.h"
 
 

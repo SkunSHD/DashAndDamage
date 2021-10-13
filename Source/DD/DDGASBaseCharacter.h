@@ -40,10 +40,9 @@ protected:
 
 	void OnMovementAttributeChanged(const struct FOnAttributeChangeData& Data);
 
-	//UFUNCTION()
+	// UFUNCTION()
 	void OnGameplayEffectApplied(UAbilitySystemComponent* Source, const struct FGameplayEffectSpec& Spec, struct FActiveGameplayEffectHandle Handle);
 
 public:	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
 };

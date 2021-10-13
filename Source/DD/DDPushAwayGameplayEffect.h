@@ -17,5 +17,5 @@ class DD_API UDDPushAwayGameplayEffect : public UGameplayEffect
 public:
 
 	UPROPERTY(EditDefaultsOnly)
-	float Strength = 100;
+	float Strength = 500;
 };
