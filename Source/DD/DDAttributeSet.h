@@ -28,4 +28,8 @@ public:
     UPROPERTY(BlueprintReadOnly)
     FGameplayAttributeData MoveSpeed = 600.0f;
     ATTRIBUTE_ACCESSORS(UDDAttributeSet, MoveSpeed)
+
+protected:
+
+	void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data);
 };
