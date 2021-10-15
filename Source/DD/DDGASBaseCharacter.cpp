@@ -25,6 +25,7 @@ void ADDGASBaseCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMoveSpeedAttribute()).AddUObject(this, &ADDGASBaseCharacter::OnMovementAttributeChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetHealthAttribute()).AddUObject(this, &ADDGASBaseCharacter::OnHealthAttributeChanged);
 
 	for (const auto& ability : StandartAbilities)
     {
@@ -52,6 +53,17 @@ UAbilitySystemComponent* ADDGASBaseCharacter::GetAbilitySystemComponent() const
 void ADDGASBaseCharacter::OnMovementAttributeChanged(const FOnAttributeChangeData& Data)
 {
     GetCharacterMovement()->MaxWalkSpeed = AttributeSet->GetMoveSpeed();
+}
+
+
+void ADDGASBaseCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData& Data)
+{
+    UE_LOG(LogTemp, Warning, TEXT("OnHealthAttributeChanged Health %f"), AttributeSet->GetHealth());
+
+    if (AttributeSet->GetHealth() <= 0)
+    {
+        this->SetLifeSpan(1);
+    }
 }
 
 

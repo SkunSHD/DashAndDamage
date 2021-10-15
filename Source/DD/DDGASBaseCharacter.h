@@ -40,6 +40,8 @@ protected:
 
 	void OnMovementAttributeChanged(const struct FOnAttributeChangeData& Data);
 
+	void OnHealthAttributeChanged(const struct FOnAttributeChangeData& Data);
+
 	// UFUNCTION()
 	void OnGameplayEffectApplied(UAbilitySystemComponent* Source, const struct FGameplayEffectSpec& Spec, struct FActiveGameplayEffectHandle Handle);
 
