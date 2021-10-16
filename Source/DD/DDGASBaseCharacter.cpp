@@ -17,6 +17,8 @@ ADDGASBaseCharacter::ADDGASBaseCharacter()
 	AbilitySystemComponent = CreateDefaultSubobject<UDDAbilitySystemComponent>("AbilitySystemComponent");
 
 	AttributeSet = CreateDefaultSubobject<UDDAttributeSet>(TEXT("AttributeSet"));
+
+    GASPlayerState = EGASPlayerState::Idle;
 }
 
 
@@ -33,6 +35,7 @@ void ADDGASBaseCharacter::BeginPlay()
     }
 
 	AbilitySystemComponent->OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &ADDGASBaseCharacter::OnGameplayEffectApplied);
+    AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag("Effect.Stun")).AddUObject(this, &ADDGASBaseCharacter::OnStunTagChanged);
 }
 
 
@@ -62,6 +65,7 @@ void ADDGASBaseCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData&
 
     if (AttributeSet->GetHealth() <= 0)
     {
+        GASPlayerState = EGASPlayerState::Dead;
         this->SetLifeSpan(1);
     }
 }
@@ -85,4 +89,17 @@ void ADDGASBaseCharacter::OnGameplayEffectApplied(UAbilitySystemComponent* Sourc
             movementComponent->ApplyRootMotionSource(constantForce);
         }
 	}
+}
+
+
+void ADDGASBaseCharacter::OnStunTagChanged(const FGameplayTag Tag, int32 Count)
+{
+    if (Count > 0)
+    {
+        GASPlayerState = EGASPlayerState::Stunned;
+    }
+    else
+    {
+        GASPlayerState = EGASPlayerState::Idle;
+    }
 }

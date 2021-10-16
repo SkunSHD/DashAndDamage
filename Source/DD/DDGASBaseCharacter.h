@@ -15,6 +15,13 @@ enum class EGASInputActions : uint8
     Dash
 };
 
+UENUM(BlueprintType)
+enum class EGASPlayerState : uint8
+{
+	Idle,
+	Stunned,
+	Dead
+};
 
 UCLASS()
 class DD_API ADDGASBaseCharacter : public ACharacter, public IAbilitySystemInterface
@@ -29,6 +36,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
     TMap<EGASInputActions, TSubclassOf<class UGameplayAbility>> StandartAbilities;
 
+	UPROPERTY(BlueprintReadOnly)
+	EGASPlayerState GASPlayerState;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -42,8 +52,13 @@ protected:
 
 	void OnHealthAttributeChanged(const struct FOnAttributeChangeData& Data);
 
+	// TODO: Figure out why build crashes with this macro enabled
 	// UFUNCTION()
 	void OnGameplayEffectApplied(UAbilitySystemComponent* Source, const struct FGameplayEffectSpec& Spec, struct FActiveGameplayEffectHandle Handle);
+
+	// TODO: Figure out why build crashes with this macro enabled
+	// UFUNCTION()
+	void OnStunTagChanged(const struct FGameplayTag Tag, int32 Count);
 
 public:	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
