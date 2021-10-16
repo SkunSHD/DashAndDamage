@@ -8,6 +8,7 @@
 #include "GameplayEffect.h"
 #include "GameplayEffectTypes.h"
 #include "DDPushAwayGameplayEffect.h"
+#include "DDDamageGameplayEffect.h"
 #include "GameplayTagContainer.h"
 #include "DDAbilitySystemComponent.h"
 
@@ -73,7 +74,7 @@ void ADDGASBaseCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData&
 
 void ADDGASBaseCharacter::OnGameplayEffectApplied(UAbilitySystemComponent* Source, const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle)
 {
-	if (auto pushbackEffect = Cast<UDDPushAwayGameplayEffect>(Spec.Def))
+    if (auto pushbackEffect = Cast<UDDPushAwayGameplayEffect>(Spec.Def))
 	{
         if (auto movementComponent = GetCharacterMovement())
         {
@@ -91,6 +92,10 @@ void ADDGASBaseCharacter::OnGameplayEffectApplied(UAbilitySystemComponent* Sourc
             movementComponent->ApplyRootMotionSource(ConstantForceReference);
         }
 	}
+    else if (auto damageEffect = Cast<UDDDamageGameplayEffect>(Spec.Def))
+    {
+        IsDamagedDuringStun = true;
+    }
 }
 
 
@@ -103,5 +108,6 @@ void ADDGASBaseCharacter::OnStunTagChanged(const FGameplayTag Tag, int32 Count)
     else
     {
         GASPlayerState = EGASPlayerState::Idle;
+        IsDamagedDuringStun = false;
     }
 }

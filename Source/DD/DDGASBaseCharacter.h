@@ -52,13 +52,16 @@ protected:
 
 	void OnHealthAttributeChanged(const struct FOnAttributeChangeData& Data);
 
-	// TODO: Figure out why build crashes with this macro enabled
+	// TODO: Figure out why build is crashed if this macro enabled
 	// UFUNCTION()
 	void OnGameplayEffectApplied(UAbilitySystemComponent* Source, const struct FGameplayEffectSpec& Spec, struct FActiveGameplayEffectHandle Handle);
 
-	// TODO: Figure out why build crashes with this macro enabled
+	// TODO: Figure out why build is crashed if this macro enabled
 	// UFUNCTION()
 	void OnStunTagChanged(const struct FGameplayTag Tag, int32 Count);
+
+	UPROPERTY(BlueprintReadOnly)
+	bool IsDamagedDuringStun;
 
 public:	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
