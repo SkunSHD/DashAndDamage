@@ -86,7 +86,9 @@ void ADDGASBaseCharacter::OnGameplayEffectApplied(UAbilitySystemComponent* Sourc
             constantForce->Duration = Spec.GetDuration();
             constantForce->FinishVelocityParams.Mode = ERootMotionFinishVelocityMode::SetVelocity;
             constantForce->FinishVelocityParams.SetVelocity = FVector::ZeroVector;
-            movementComponent->ApplyRootMotionSource(constantForce);
+
+            TSharedRef<FRootMotionSource_ConstantForce> ConstantForceReference(constantForce);
+            movementComponent->ApplyRootMotionSource(ConstantForceReference);
         }
 	}
 }
