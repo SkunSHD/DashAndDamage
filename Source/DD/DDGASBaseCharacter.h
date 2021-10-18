@@ -43,7 +43,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY()
-    class UDDAbilitySystemComponent* AbilitySystemComponent;
+    class UAbilitySystemComponent* AbilitySystemComponent;
 
 	UPROPERTY()
     class UDDAttributeSet* AttributeSet;
@@ -52,11 +52,11 @@ protected:
 
 	void OnHealthAttributeChanged(const struct FOnAttributeChangeData& Data);
 
-	// TODO: Figure out why build is crashed if this macro enabled
+	// TODO: Figure out why build is crashed if this macro is enabled
 	// UFUNCTION()
 	void OnGameplayEffectApplied(UAbilitySystemComponent* Source, const struct FGameplayEffectSpec& Spec, struct FActiveGameplayEffectHandle Handle);
 
-	// TODO: Figure out why build is crashed if this macro enabled
+	// TODO: Figure out why build is crashed if this macro is enabled
 	// UFUNCTION()
 	void OnStunTagChanged(const struct FGameplayTag Tag, int32 Count);
 

@@ -10,12 +10,11 @@
 #include "DDPushAwayGameplayEffect.h"
 #include "DDDamageGameplayEffect.h"
 #include "GameplayTagContainer.h"
-#include "DDAbilitySystemComponent.h"
 
 
 ADDGASBaseCharacter::ADDGASBaseCharacter()
 {
-	AbilitySystemComponent = CreateDefaultSubobject<UDDAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
 
 	AttributeSet = CreateDefaultSubobject<UDDAttributeSet>(TEXT("AttributeSet"));
 
