@@ -2,10 +2,16 @@
 
 
 #include "DDAI.h"
+#include "GameFramework/Character.h"
+#include "Components/CapsuleComponent.h"
 
 
 ADDAI::ADDAI()
 {
-	// TODO: Make capsule overlap with camera
-	// TODO: Make mesh overlap with camera
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	GetMesh()->SetCollisionObjectType(ECC_Pawn);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Overlap);
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Overlap);
 }
