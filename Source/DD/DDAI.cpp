@@ -3,3 +3,9 @@
 
 #include "DDAI.h"
 
+
+ADDAI::ADDAI()
+{
+	// TODO: Make capsule overlap with camera
+	// TODO: Make mesh overlap with camera
+}

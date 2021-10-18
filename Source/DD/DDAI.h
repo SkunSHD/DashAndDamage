@@ -14,5 +14,7 @@ class DD_API ADDAI : public ADDGASBaseCharacter
 {
 	GENERATED_BODY()
 
-	// TODO: Delete this component
+public:
+
+	ADDAI();
 };
