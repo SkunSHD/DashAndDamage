@@ -63,6 +63,8 @@ void ADDGASBaseCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData&
 {
     UE_LOG(LogTemp, Warning, TEXT("OnHealthAttributeChanged Health %f"), AttributeSet->GetHealth());
 
+    OnHealthChanged.Broadcast(AttributeSet->GetHealth());
+
     if (AttributeSet->GetHealth() <= 0)
     {
         GASPlayerState = EGASPlayerState::Dead;

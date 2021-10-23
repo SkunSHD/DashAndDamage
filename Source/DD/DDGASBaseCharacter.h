@@ -8,6 +8,8 @@
 #include "DDGASBaseCharacter.generated.h"
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedDelegate, float, Health);
+
 UENUM(BlueprintType)
 enum class EGASInputActions : uint8
 {
@@ -65,4 +67,7 @@ protected:
 
 public:	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(BlueprintAssignable, Category = "Event")
+	FOnHealthChangedDelegate OnHealthChanged;
 };
