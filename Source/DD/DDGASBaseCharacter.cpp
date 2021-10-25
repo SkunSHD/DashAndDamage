@@ -29,9 +29,9 @@ void ADDGASBaseCharacter::BeginPlay()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMoveSpeedAttribute()).AddUObject(this, &ADDGASBaseCharacter::OnMovementAttributeChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetHealthAttribute()).AddUObject(this, &ADDGASBaseCharacter::OnHealthAttributeChanged);
 
-	for (const auto& ability : StandartAbilities)
+	for (const TPair<EGASInputActions, TSubclassOf<UGameplayAbility>>& Ability : StandartAbilities)
     {
-   		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(ability.Value, 1, static_cast<int32>(ability.Key)));
+   		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(Ability.Value, 1, static_cast<int32>(Ability.Key)));
     }
 
 	AbilitySystemComponent->OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &ADDGASBaseCharacter::OnGameplayEffectApplied);
@@ -75,25 +75,25 @@ void ADDGASBaseCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData&
 
 void ADDGASBaseCharacter::OnGameplayEffectApplied(UAbilitySystemComponent* Source, const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle)
 {
-    if (auto pushbackEffect = Cast<UDDPushAwayGameplayEffect>(Spec.Def))
+    if (const UDDPushAwayGameplayEffect* PushbackEffect = Cast<UDDPushAwayGameplayEffect>(Spec.Def))
 	{
-        if (auto movementComponent = GetCharacterMovement())
+        if (UCharacterMovementComponent* MovementComponent = GetCharacterMovement())
         {
-            auto instigator = Spec.GetEffectContext().GetInstigator();
-            auto direction = instigator ? (GetActorLocation() - instigator->GetActorLocation()).GetSafeNormal2D() : GetActorForwardVector() * -1.0f;
+            AActor* EffectInstigator = Spec.GetEffectContext().GetInstigator();
+            FVector Direction = EffectInstigator ? (GetActorLocation() - EffectInstigator->GetActorLocation()).GetSafeNormal2D() : GetActorForwardVector() * -1.0f;
 
-            auto constantForce = new FRootMotionSource_ConstantForce();
-            constantForce->AccumulateMode = ERootMotionAccumulateMode::Additive;
-            constantForce->Force = direction * pushbackEffect->Strength;
-            constantForce->Duration = Spec.GetDuration();
-            constantForce->FinishVelocityParams.Mode = ERootMotionFinishVelocityMode::SetVelocity;
-            constantForce->FinishVelocityParams.SetVelocity = FVector::ZeroVector;
+            FRootMotionSource_ConstantForce* ConstantForce = new FRootMotionSource_ConstantForce();
+            ConstantForce->AccumulateMode = ERootMotionAccumulateMode::Additive;
+            ConstantForce->Force = Direction * PushbackEffect->Strength;
+            ConstantForce->Duration = Spec.GetDuration();
+            ConstantForce->FinishVelocityParams.Mode = ERootMotionFinishVelocityMode::SetVelocity;
+            ConstantForce->FinishVelocityParams.SetVelocity = FVector::ZeroVector;
 
-            TSharedRef<FRootMotionSource_ConstantForce> ConstantForceReference(constantForce);
-            movementComponent->ApplyRootMotionSource(ConstantForceReference);
+            TSharedRef<FRootMotionSource_ConstantForce> ConstantForceReference(ConstantForce);
+            MovementComponent->ApplyRootMotionSource(ConstantForceReference);
         }
 	}
-    else if (auto damageEffect = Cast<UDDDamageGameplayEffect>(Spec.Def))
+    else if (const UDDDamageGameplayEffect* DamageEffect = Cast<UDDDamageGameplayEffect>(Spec.Def))
     {
         IsDamagedDuringStun = true;
     }

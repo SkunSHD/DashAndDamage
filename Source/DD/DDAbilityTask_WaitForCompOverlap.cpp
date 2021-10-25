@@ -28,9 +28,9 @@ void UDDAbilityTask_WaitForCompOverlap::OnDestroy(bool AbilityEnded)
 
 UDDAbilityTask_WaitForCompOverlap* UDDAbilityTask_WaitForCompOverlap::WaitForComponentOverlap(UGameplayAbility* OwningAbility, UPrimitiveComponent* Component)
 {
-    auto abilityTask = NewAbilityTask<UDDAbilityTask_WaitForCompOverlap>(OwningAbility);
-    abilityTask->Component = Component;
-    return abilityTask;
+    UDDAbilityTask_WaitForCompOverlap* AbilityTask = NewAbilityTask<UDDAbilityTask_WaitForCompOverlap>(OwningAbility);
+    AbilityTask->Component = Component;
+    return AbilityTask;
 }
 
 
@@ -38,13 +38,13 @@ void UDDAbilityTask_WaitForCompOverlap::OnHitCallback(UPrimitiveComponent* Overl
 {
     if (OtherActor)
     {
-        auto targetData = new FGameplayAbilityTargetData_ActorArray();
-        targetData->TargetActorArray.Add(OtherActor);
+        FGameplayAbilityTargetData_ActorArray* TargetData = new FGameplayAbilityTargetData_ActorArray();
+        TargetData->TargetActorArray.Add(OtherActor);
 
-        auto targetDataHandle = FGameplayAbilityTargetDataHandle(targetData);
+        FGameplayAbilityTargetDataHandle TargetDataHandle = FGameplayAbilityTargetDataHandle(TargetData);
         if (ShouldBroadcastAbilityTaskDelegates())
         {
-            OnOverlap.Broadcast(targetDataHandle);
+            OnOverlap.Broadcast(TargetDataHandle);
         }
     }
 }
